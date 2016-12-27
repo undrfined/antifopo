@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Fopo deobfuscator</title>
+	<style>
+		textarea {
+			padding: 1em;
+			font-size: 1em;
+			font-family: "Montserrat", "sans-serif";
+			border: 0.1em solid #ccc;
+			border-radius: 0.5em;
+			width: 100%;
+			-moz-box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+			-ms-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+		body {
+			text-align: center;
+			padding: 10px;
+			margin: 0;
+		}
+		h1, p {
+			margin: auto;
+			font-family: Arial;
+			max-width: 30%;
+		}
+		button {
+			background-color: #4CAF50;
+			border: none;
+			color: white;
+			padding: 15px 32px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			-webkit-transition-duration: 0.4s;
+			transition-duration: 0.4s;
+		}
+		button:hover {
+			box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+		}
+	</style>
+</head>
+<body>
+	<h1>Anti-Fopo</h1>
+	<p>Здесь вы можете деобфусцировать фопо!</p>
+	<br>
+	<textarea id="code" placeholder="Введите обфусцированый код сюда."></textarea>
+	<button onclick="deobfuscate();">Make it ra1n!</button>
+	<script type="text/javascript" src="zlib.js"></script>
+	<script type="text/javascript">
+		window.onerror = function (errorMsg, url, lineNumber) {
+			alert("Произошла ошибка! " + errorMsg);
+		}
+		function str_rot13(str) {
+			return (str + '').replace(/[a-z]/gi, function (s) {return String.fromCharCode(s.charCodeAt(0) + (s.toLowerCase() < 'n' ? 13 : -13))});
+		}
+		function deobfuscate() {
+			var code = document.getElementById("code").value;
+			var eval = code.split("(");
+			var base64 = eval[2].split("\"");
+			var i1 = atob(base64[1]).split("eval");
+			var i2 = i1[1].split(":");
+			var i3 = i2[1].split("\"");
+			var encodedlayer = RawDeflate.inflate(atob(str_rot13(i3[1])));
+			while(!encodedlayer.match(/\?\>/)) {
+				var dl = encodedlayer.split("\"");
+				if(dl.length > 7) {
+					encodedlayer = RawDeflate.inflate(atob(str_rot13(dl[7])));
+				} else {
+					encodedlayer = RawDeflate.inflate(atob(dl[5]));
+				}
+			}
+			var final = encodedlayer.split("?>")[1];
+			alert(final);
+		}
+	</script>
+</body>
+</html>
