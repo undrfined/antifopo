@@ -11,6 +11,7 @@
 			border: 0.1em solid #ccc;
 			border-radius: 0.5em;
 			width: 100%;
+			max-width: 100%;
 			-moz-box-sizing: border-box;
 			-webkit-box-sizing: border-box;
 			-ms-box-sizing: border-box;
@@ -52,7 +53,7 @@
 	<script type="text/javascript" src="zlib.js"></script>
 	<script type="text/javascript">
 		window.onerror = function (errorMsg, url, lineNumber) {
-			alert("Произошла ошибка! " + errorMsg);
+			alert("Произошла ошибка, ваш код не может быть деобфусирован. " + errorMsg + ", строка " + lineNumber);
 		}
 		function str_rot13(str) {
 			return (str + '').replace(/[a-z]/gi, function (s) {return String.fromCharCode(s.charCodeAt(0) + (s.toLowerCase() < 'n' ? 13 : -13))});
@@ -74,7 +75,8 @@
 				}
 			}
 			var final = encodedlayer.split("?>")[1];
-			alert(final);
+			document.getElementById("code").value = final;
+			alert("Успех!");
 		}
 	</script>
 </body>
